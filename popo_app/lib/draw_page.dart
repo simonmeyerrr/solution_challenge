@@ -41,8 +41,7 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
           onPanUpdate: (DragUpdateDetails details) {
             setState(() {
               RenderBox object = context.findRenderObject();
-              Offset localPosition =
-                  object.globalToLocal(details.localPosition);
+              Offset localPosition = object.globalToLocal(details.localPosition);
               points = new List.from(points);
               points.add(localPosition);
             });
@@ -60,171 +59,175 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
         ),
       ),
       floatingActionButton:
-          Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            Container(
-              height: 70.0,
-              width: 56.0,
-              alignment: FractionalOffset.topCenter,
-              child: ScaleTransition(
-                scale: CurvedAnimation(
-                  parent: controller,
-                  curve: Interval(0.0, 1.0 - 0 / 3 / 2.0, curve: Curves.easeOut),
-                ),
-                child: FloatingActionButton(
-                  heroTag: "btnDrawSave",
-                  backgroundColor: Colors.green,
-                  mini: true,
-                  child: Icon(Icons.save),
-                  onPressed: () {
-                    for (var i = 0; i < 20; i++) {
-                      if (points.isNotEmpty) {
-                        points.removeLast();
-                      }
-                    }
-                    for (Painter painter in painters) {
-                      painter.points.clear();
-                    }
-                  },
-                ),
-              ),
-            ),
-            Container(
-              height: 70.0,
-              width: 56.0,
-              alignment: FractionalOffset.topCenter,
-              child: ScaleTransition(
-                scale: CurvedAnimation(
-                  parent: controller,
-                  curve: Interval(0.0, 1.0 - 0 / 3 / 2.0, curve: Curves.easeOut),
-                ),
-                child: FloatingActionButton(
-                  heroTag: "btnDraw0",
-                  backgroundColor: Colors.green,
-                  mini: true,
-                  child: Icon(Icons.undo),
-                  onPressed: () {
-                    for (var i = 0; i < 20; i++) {
-                      if (points.isNotEmpty) {
-                        points.removeLast();
-                      }
-                    }
-                    for (Painter painter in painters) {
-                      painter.points.clear();
-                    }
-                  },
-                ),
-              ),
-            ),
-        Container(
-          height: 70.0,
-          width: 56.0,
-          alignment: FractionalOffset.topCenter,
-          child: ScaleTransition(
-            scale: CurvedAnimation(
-              parent: controller,
-              curve: Interval(0.0, 1.0 - 0 / 3 / 2.0, curve: Curves.easeOut),
-            ),
-            child: FloatingActionButton(
-              heroTag: "btnDraw1",
-              backgroundColor: Colors.green,
-              mini: true,
-              child: Icon(Icons.clear),
-              onPressed: () {
-                points.clear();
-                for (Painter painter in painters) {
-                  painter.points.clear();
-                }
-              },
-            ),
-          ),
-        ),
-        Container(
-          height: 70.0,
-          width: 56.0,
-          alignment: FractionalOffset.topCenter,
-          child: ScaleTransition(
-            scale: CurvedAnimation(
-              parent: controller,
-              curve: Interval(0.0, 1.0 - 1 / 3 / 2.0, curve: Curves.easeOut),
-            ),
-            child: FloatingActionButton(
-              heroTag: "btnDraw2",
-              backgroundColor: Colors.green,
-              mini: true,
-              child: Icon(Icons.lens),
-              onPressed: () async {
-                double temp;
-                temp = await showDialog(
-                    context: context, builder: (context) => WidthDialog(strokeWidth: strokeWidth));
-                if (temp != null) {
-                  setState(() {
-                    painters.add(Painter(
-                        points: points.toList(),
-                        color: color,
-                        strokeCap: strokeCap,
-                        strokeWidth: strokeWidth));
-                    points.clear();
-                    strokeWidth = temp;
-                  });
-                }
-              },
-            ),
-          ),
-        ),
-        Container(
+        Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+          Container(
             height: 70.0,
             width: 56.0,
             alignment: FractionalOffset.topCenter,
             child: ScaleTransition(
-                scale: CurvedAnimation(
-                  parent: controller,
-                  curve:
-                      Interval(0.0, 1.0 - 2 / 3 / 2.0, curve: Curves.easeOut),
-                ),
-                child: FloatingActionButton(
-                    heroTag: "btnDraw3",
-                    backgroundColor: Colors.green,
-                    mini: true,
-                    child: Icon(Icons.color_lens),
-                    onPressed: () async {
-                      Color temp;
-                      temp = await showDialog(
-                          context: context,
-                          builder: (context) => ColorDialog());
-                      if (temp != null) {
-                        setState(() {
-                          painters.add(Painter(
-                              points: points.toList(),
-                              color: color,
-                              strokeCap: strokeCap,
-                              strokeWidth: strokeWidth));
-                          points.clear();
-                          color = temp;
-                        });
-                      }
-                    }))),
-        FloatingActionButton(
-          heroTag: "btnDraw4",
-          backgroundColor: Colors.green,
-          child: AnimatedBuilder(
-            animation: controller,
-            builder: (BuildContext context, Widget child) {
-              return Transform(
-                transform: Matrix4.rotationZ(controller.value * 0.5 * math.pi),
-                alignment: FractionalOffset.center,
-                child: Icon(Icons.brush, size: 36.0),
-              );
-            },
+              scale: CurvedAnimation(
+                parent: controller,
+                curve: Interval(0.0, 1.0 - 0 / 5 / 2.0, curve: Curves.easeOut),
+              ),
+              child: FloatingActionButton(
+                heroTag: "btnDrawSave",
+                backgroundColor: Colors.green,
+                mini: true,
+                child: Icon(Icons.save),
+                onPressed: () {
+                  for (var i = 0; i < 20; i++) {
+                    if (points.isNotEmpty) {
+                      points.removeLast();
+                    }
+                  }
+                  for (Painter painter in painters) {
+                    painter.points.clear();
+                  }
+                },
+              ),
+            ),
           ),
-          onPressed: () {
-            if (controller.isDismissed) {
-              controller.forward();
-            } else {
-              controller.reverse();
-            }
-          },
-        ),
-      ]),
+          Container(
+            height: 70.0,
+            width: 56.0,
+            alignment: FractionalOffset.topCenter,
+            child: ScaleTransition(
+              scale: CurvedAnimation(
+                parent: controller,
+                curve: Interval(0.0, 1.0 - 1 / 5 / 2.0, curve: Curves.easeOut),
+              ),
+              child: FloatingActionButton(
+                heroTag: "btnDraw0",
+                backgroundColor: Colors.green,
+                mini: true,
+                child: Icon(Icons.undo),
+                onPressed: () {
+                  for (var i = 0; i < 20; i++) {
+                    if (points.isNotEmpty) {
+                      points.removeLast();
+                    }
+                  }
+                  for (Painter painter in painters) {
+                    painter.points.clear();
+                  }
+                },
+              ),
+            ),
+          ),
+          Container(
+            height: 70.0,
+            width: 56.0,
+            alignment: FractionalOffset.topCenter,
+            child: ScaleTransition(
+              scale: CurvedAnimation(
+                parent: controller,
+                curve: Interval(0.0, 1.0 - 2 / 5 / 2.0, curve: Curves.easeOut),
+              ),
+              child: FloatingActionButton(
+                heroTag: "btnDraw1",
+                backgroundColor: Colors.green,
+                mini: true,
+                child: Icon(Icons.clear),
+                onPressed: () {
+                  points.clear();
+                  for (Painter painter in painters) {
+                    painter.points.clear();
+                  }
+                },
+              ),
+            ),
+          ),
+          Container(
+            height: 70.0,
+            width: 56.0,
+            alignment: FractionalOffset.topCenter,
+            child: ScaleTransition(
+              scale: CurvedAnimation(
+                parent: controller,
+                curve: Interval(0.0, 1.0 - 3 / 5 / 2.0, curve: Curves.easeOut),
+              ),
+              child: FloatingActionButton(
+                heroTag: "btnDraw2",
+                backgroundColor: Colors.green,
+                mini: true,
+                child: Icon(Icons.lens),
+                onPressed: () async {
+                  double temp;
+                  temp = await showDialog(context: context, builder: (context) => WidthDialog(strokeWidth: strokeWidth));
+                  if (temp != null) {
+                    setState(() {
+                      painters.add(Painter(
+                          points: points.toList(),
+                          color: color,
+                          strokeCap: strokeCap,
+                          strokeWidth: strokeWidth));
+                      points.clear();
+                      strokeWidth = temp;
+                    });
+                  }
+                },
+              ),
+            ),
+          ),
+          Container(
+            height: 70.0,
+            width: 56.0,
+            alignment: FractionalOffset.topCenter,
+            child: ScaleTransition(
+              scale: CurvedAnimation(
+                parent: controller,
+                curve: Interval(0.0, 1.0 - 4 / 5 / 2.0, curve: Curves.easeOut),
+              ),
+              child: FloatingActionButton(
+                heroTag: "btnDraw3",
+                backgroundColor: Colors.green,
+                mini: true,
+                child: Icon(Icons.color_lens),
+                onPressed: () async {
+                  Color temp;
+                  temp = await showDialog(context: context, builder: (context) => ColorDialog());
+                  if (temp != null) {
+                    setState(() {
+                      painters.add(Painter(
+                        points: points.toList(),
+                        color: color,
+                        strokeCap: strokeCap,
+                        strokeWidth: strokeWidth));
+                      points.clear();
+                      color = temp;
+                    });
+                  }
+                }
+              )
+            )
+          ),
+          Container(
+            height: 60,
+            width: 60,
+            child:           FloatingActionButton(
+              heroTag: "btnDraw4",
+              backgroundColor: Colors.green,
+              child: AnimatedBuilder(
+                animation: controller,
+                builder: (BuildContext context, Widget child) {
+                  return Transform(
+                    transform: Matrix4.rotationZ(controller.value * 0.5 * math.pi),
+                    alignment: FractionalOffset.center,
+                    child: Icon(Icons.brush, size: 36.0),
+                  );
+                },
+              ),
+              onPressed: () {
+                if (controller.isDismissed) {
+                  controller.forward();
+                } else {
+                  controller.reverse();
+                }
+              },
+            )
+          )
+        ]
+      ),
     );
   }
 }

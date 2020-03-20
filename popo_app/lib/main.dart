@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/draw_page.dart';
 import 'package:flutterapp/side_menu.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:location/location.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,22 +17,35 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyAppState(),
+      home: MyHomePage(),
     );
   }
 }
 
-class MyAppState extends StatelessWidget {
-  GoogleMapController mapController;
+class MyHomePage extends StatefulWidget {
+  @override
+  State<MyHomePage> createState() => MyAppState();
+}
+class MyAppState extends State<MyHomePage> {
 
-  final LatLng _center = const LatLng(45.521563, -122.677433);
+  Completer<GoogleMapController> _mapController = Completer();
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
+  static LatLng _cameraPosition;
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   PanelController _pc = new PanelController();
+
+  @override
+  void initState() {
+    super.initState();
+    _initLocalisation();
+  }
+
+  _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      _mapController.complete(controller);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +57,7 @@ class MyAppState extends StatelessWidget {
         panel: Center(
           child: Text("This is the sliding Widget"),
         ),
-        body: _body()
+        body: _cameraPosition == null ? Container(child: Center(child:Text('loading map..', style: TextStyle(fontFamily: 'Avenir-Medium', color: Colors.grey[400]),),),) : _body()
       ),
       drawer: NavDrawer(),
     );
@@ -52,26 +67,30 @@ class MyAppState extends StatelessWidget {
     return Stack(
       children: <Widget>[
         GoogleMap(
-          onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 11.0,
+            target: _cameraPosition,
+            zoom: 18.0,
           ),
+          onMapCreated: _onMapCreated,
+          myLocationEnabled: true,
+          myLocationButtonEnabled: false
         ),
         Padding(
             padding: const EdgeInsets.all(16.0),
             child: Align(
               alignment: Alignment.bottomLeft,
               child: Container(
-                  child: FloatingActionButton(
-                      heroTag: "mainBtnLeft",
-                      materialTapTargetSize: MaterialTapTargetSize.padded,
-                      backgroundColor: Colors.green,
-                      child: const Icon(Icons.menu, size: 36.0),
-                      onPressed: () {
-                        _scaffoldKey.currentState.openDrawer();
-                      }
-                  )
+                height: 60,
+                width: 60,
+                child: FloatingActionButton(
+                    heroTag: "mainBtnMenu",
+                    materialTapTargetSize: MaterialTapTargetSize.padded,
+                    backgroundColor: Colors.green,
+                    child: const Icon(Icons.menu, size: 36.0),
+                    onPressed: () {
+                      _scaffoldKey.currentState.openDrawer();
+                    }
+                )
               ),
             )
         ),
@@ -80,15 +99,17 @@ class MyAppState extends StatelessWidget {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                  child: FloatingActionButton(
-                    heroTag: "mainBtnCenter",
-                    materialTapTargetSize: MaterialTapTargetSize.padded,
-                    backgroundColor: Colors.green,
-                    child: const Icon(Icons.bookmark_border, size: 36.0),
-                    onPressed: () {
-                      _pc.open();
-                    },
-                  )
+                height: 60,
+                width: 60,
+                child: FloatingActionButton(
+                  heroTag: "mainBtnEvents",
+                  materialTapTargetSize: MaterialTapTargetSize.padded,
+                  backgroundColor: Colors.green,
+                  child: const Icon(Icons.account_balance, size: 36.0),
+                  onPressed: () {
+                    _pc.open();
+                  },
+                )
               ),
             )
         ),
@@ -97,34 +118,63 @@ class MyAppState extends StatelessWidget {
             child: Align(
               alignment: Alignment.bottomRight,
               child: Container(
-                  child: FloatingActionButton(
-                    heroTag: "mainBtnRight",
-                    materialTapTargetSize: MaterialTapTargetSize.padded,
-                    backgroundColor: Colors.green,
-                    child: const Icon(Icons.brush, size: 36.0),
-                    onPressed: () {
-                      Navigator.push(_scaffoldKey.currentContext, MaterialPageRoute(builder: (context) => DrawPage()));
-                    },
-                  )
+                height: 60,
+                width: 60,
+                child: FloatingActionButton(
+                  heroTag: "mainBtnDraw",
+                  materialTapTargetSize: MaterialTapTargetSize.padded,
+                  backgroundColor: Colors.green,
+                  child: const Icon(Icons.brush, size: 36.0),
+                  onPressed: () {
+                    Navigator.push(_scaffoldKey.currentContext, MaterialPageRoute(builder: (context) => DrawPage()));
+                  },
+                ),
               ),
             )
         ),
         Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(16, 16, 26, 100),
             child: Align(
-              alignment: Alignment.topRight,
+              alignment: Alignment.bottomRight,
               child: Container(
-                  child: FloatingActionButton(
-                    heroTag: "mainBtnTop",
-                    materialTapTargetSize: MaterialTapTargetSize.padded,
-                    backgroundColor: Colors.blue,
-                    child: const Icon(Icons.brush, size: 36.0),
-                    //onPressed: _getLocation,
-                  )
+                height: 40,
+                width: 40,
+                child: FloatingActionButton(
+                  heroTag: "mainBtnGeoloc",
+                  materialTapTargetSize: MaterialTapTargetSize.padded,
+                  backgroundColor: Colors.green,
+                  child: const Icon(Icons.my_location, size: 20.0),
+                  onPressed: _getLocationAndMove
+                )
               ),
             )
         ),
       ],
     );
+  }
+
+  void _initLocalisation() async {
+    Position position = await Geolocator().getCurrentPosition();
+    setState(() {
+      _cameraPosition = LatLng(position.latitude, position.longitude);
+    });
+  }
+
+  void _getLocationAndMove() async {
+    final GoogleMapController controller = await _mapController.future;
+    LocationData currentLocation;
+    var location = new Location();
+    try {
+      currentLocation = await location.getLocation();
+    } on Exception {
+      currentLocation = null;
+    }
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(
+      bearing: 0,
+      target: LatLng(currentLocation.latitude, currentLocation.longitude),
+      zoom: 18.0,
+    ),
+    ));
   }
 }

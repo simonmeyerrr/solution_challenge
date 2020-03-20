@@ -5,6 +5,7 @@ INJECTED from /Users/pauldec/AndroidStudioProjects/flutter_app/android/app/src/m
 INJECTED from /Users/pauldec/AndroidStudioProjects/flutter_app/android/app/src/main/AndroidManifest.xml:1:1-35:12
 INJECTED from /Users/pauldec/AndroidStudioProjects/flutter_app/android/app/src/main/AndroidManifest.xml:1:1-35:12
 MERGED from /Users/pauldec/AndroidStudioProjects/flutter_app/android/app/src/main/AndroidManifest.xml:1:1-35:12
+MERGED from [:location] /Users/pauldec/AndroidStudioProjects/flutter_app/build/location/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-10:12
 MERGED from [:geolocator] /Users/pauldec/AndroidStudioProjects/flutter_app/build/geolocator/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:location_permissions] /Users/pauldec/AndroidStudioProjects/flutter_app/build/location_permissions/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:google_maps_flutter] /Users/pauldec/AndroidStudioProjects/flutter_app/build/google_maps_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
@@ -121,6 +122,8 @@ ADDED from /Users/pauldec/AndroidStudioProjects/flutter_app/android/app/src/main
 		ADDED from /Users/pauldec/AndroidStudioProjects/flutter_app/android/app/src/main/AndroidManifest.xml:31:13-44
 uses-permission#android.permission.ACCESS_FINE_LOCATION
 ADDED from /Users/pauldec/AndroidStudioProjects/flutter_app/android/app/src/main/AndroidManifest.xml:34:5-79
+MERGED from [:location] /Users/pauldec/AndroidStudioProjects/flutter_app/build/location/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-79
+MERGED from [:location] /Users/pauldec/AndroidStudioProjects/flutter_app/build/location/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-79
 MERGED from [:geolocator] /Users/pauldec/AndroidStudioProjects/flutter_app/build/geolocator/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-79
 MERGED from [:geolocator] /Users/pauldec/AndroidStudioProjects/flutter_app/build/geolocator/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-79
 	android:name
@@ -129,6 +132,8 @@ uses-sdk
 INJECTED from /Users/pauldec/AndroidStudioProjects/flutter_app/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/pauldec/AndroidStudioProjects/flutter_app/android/app/src/main/AndroidManifest.xml
 INJECTED from /Users/pauldec/AndroidStudioProjects/flutter_app/android/app/src/main/AndroidManifest.xml
+MERGED from [:location] /Users/pauldec/AndroidStudioProjects/flutter_app/build/location/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:location] /Users/pauldec/AndroidStudioProjects/flutter_app/build/location/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:geolocator] /Users/pauldec/AndroidStudioProjects/flutter_app/build/geolocator/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:geolocator] /Users/pauldec/AndroidStudioProjects/flutter_app/build/geolocator/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:location_permissions] /Users/pauldec/AndroidStudioProjects/flutter_app/build/location_permissions/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
@@ -213,6 +218,10 @@ MERGED from [com.google.android.gms:play-services-maps:17.0.0] /Users/pauldec/.g
 MERGED from [com.google.android.gms:play-services-maps:17.0.0] /Users/pauldec/.gradle/caches/transforms-2/files-2.1/6b9b7fc1ad481537ed0a66d62976ec46/play-services-maps-17.0.0/AndroidManifest.xml:24:5-67
 	android:name
 		ADDED from /Users/pauldec/AndroidStudioProjects/flutter_app/android/app/src/debug/AndroidManifest.xml:6:22-64
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from [:location] /Users/pauldec/AndroidStudioProjects/flutter_app/build/location/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-81
+	android:name
+		ADDED from [:location] /Users/pauldec/AndroidStudioProjects/flutter_app/build/location/intermediates/library_manifest/debug/AndroidManifest.xml:7:22-78
 uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from [com.google.android.gms:play-services-maps:17.0.0] /Users/pauldec/.gradle/caches/transforms-2/files-2.1/6b9b7fc1ad481537ed0a66d62976ec46/play-services-maps-17.0.0/AndroidManifest.xml:23:5-79
 	android:name

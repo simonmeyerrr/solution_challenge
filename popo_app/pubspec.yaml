@@ -21,6 +21,7 @@ dependencies:
   flutter_swiper: ^1.1.6
   sliding_up_panel: ^1.0.0
   geolocator: ^5.3.0
+  location: ^2.5.0
   flutter:
     sdk: flutter
 
