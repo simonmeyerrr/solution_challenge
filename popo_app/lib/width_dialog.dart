@@ -31,7 +31,7 @@ class WidthDialogState extends State<WidthDialog> {
               width: strokeWidth,
               height: strokeWidth,
               decoration: new BoxDecoration(
-                color: Colors.black,
+                color: Theme.of(context).cursorColor,
                 shape: BoxShape.circle
               ),
             )),

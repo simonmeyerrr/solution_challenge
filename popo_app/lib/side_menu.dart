@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 
 class NavDrawer extends StatelessWidget {
+  Color headerColor = Colors.blue;
+
   @override
   Widget build(BuildContext context) {
+    //Handle dark mode
+    bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    if (isDark) {
+      headerColor = Colors.blueAccent;
+    }
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -13,7 +21,7 @@ class NavDrawer extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 25),
             ),
             decoration: BoxDecoration(
-                color: Colors.green,
+                color: headerColor,
                 /*image: DecorationImage(
                     fit: BoxFit.fill,
                     image: AssetImage('assets/images/cover.jpg')

@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
 
 import 'package:flutterapp/painter.dart';
@@ -20,6 +24,10 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
   double strokeWidth = 5.0;
   List<Painter> painters = <Painter>[];
 
+  //Screenshot variable
+  static GlobalKey previewContainer = new GlobalKey();
+  Uint8List screenShot;
+
   @override
   void initState() {
     super.initState();
@@ -34,9 +42,11 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text("Drawing"),
-        backgroundColor: Colors.green,
+        backgroundColor: Theme.of(context).accentColor,
       ),
-      body: Container(
+      backgroundColor: Colors.white,
+      body: RepaintBoundary(
+        key: previewContainer,
         child: GestureDetector(
           onPanUpdate: (DragUpdateDetails details) {
             setState(() {
@@ -60,6 +70,7 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
       ),
       floatingActionButton:
         Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+          _buildChild(),
           Container(
             height: 70.0,
             width: 56.0,
@@ -71,19 +82,9 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
               ),
               child: FloatingActionButton(
                 heroTag: "btnDrawSave",
-                backgroundColor: Colors.green,
                 mini: true,
                 child: Icon(Icons.save),
-                onPressed: () {
-                  for (var i = 0; i < 20; i++) {
-                    if (points.isNotEmpty) {
-                      points.removeLast();
-                    }
-                  }
-                  for (Painter painter in painters) {
-                    painter.points.clear();
-                  }
-                },
+                onPressed: takeScreenShot
               ),
             ),
           ),
@@ -98,7 +99,6 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
               ),
               child: FloatingActionButton(
                 heroTag: "btnDraw0",
-                backgroundColor: Colors.green,
                 mini: true,
                 child: Icon(Icons.undo),
                 onPressed: () {
@@ -125,7 +125,6 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
               ),
               child: FloatingActionButton(
                 heroTag: "btnDraw1",
-                backgroundColor: Colors.green,
                 mini: true,
                 child: Icon(Icons.clear),
                 onPressed: () {
@@ -148,7 +147,6 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
               ),
               child: FloatingActionButton(
                 heroTag: "btnDraw2",
-                backgroundColor: Colors.green,
                 mini: true,
                 child: Icon(Icons.lens),
                 onPressed: () async {
@@ -180,7 +178,6 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
               ),
               child: FloatingActionButton(
                 heroTag: "btnDraw3",
-                backgroundColor: Colors.green,
                 mini: true,
                 child: Icon(Icons.color_lens),
                 onPressed: () async {
@@ -204,9 +201,8 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
           Container(
             height: 60,
             width: 60,
-            child:           FloatingActionButton(
+            child: FloatingActionButton(
               heroTag: "btnDraw4",
-              backgroundColor: Colors.green,
               child: AnimatedBuilder(
                 animation: controller,
                 builder: (BuildContext context, Widget child) {
@@ -229,5 +225,26 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
         ]
       ),
     );
+  }
+
+  Widget _buildChild() {
+    if (screenShot != null) {
+      return new Image.memory(screenShot, height: 300, width: 150);
+    }
+    return new Text("null");
+  }
+
+  takeScreenShot() async{
+    RenderRepaintBoundary boundary = previewContainer.currentContext
+        .findRenderObject();
+    if (boundary.debugNeedsPaint) {
+      Timer(Duration(seconds: 1), () => takeScreenShot());
+      return null;
+    }
+    ui.Image img = await boundary.toImage();
+    ByteData test = await img.toByteData(format: ui.ImageByteFormat.png);
+    setState(() {
+      screenShot = test.buffer.asUint8List();
+    });
   }
 }
