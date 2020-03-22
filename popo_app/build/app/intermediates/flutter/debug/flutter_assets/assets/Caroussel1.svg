@@ -9,9 +9,9 @@
         <text id="16/04/2020" font-family="Roboto-Regular, Roboto" font-size="12" font-weight="normal" letter-spacing="0.5000005" fill="#FFFFFF">
             <tspan x="6" y="142">16/04/2020</tspan>
         </text>
-        <text id="Visite-en-réalité-vi" font-family="Roboto-Regular, Roboto" font-size="24" font-weight="normal" letter-spacing="1.000001" fill="#FFFFFF">
-            <tspan x="6" y="97">Visite en réalité</tspan>
-            <tspan x="6" y="125">virtuelle</tspan>
+        <text id="Virtual-reality-tour" font-family="Roboto-Regular, Roboto" font-size="24" font-weight="normal" letter-spacing="1.000001" fill="#FFFFFF">
+            <tspan x="6" y="97">Virtual reality</tspan>
+            <tspan x="6" y="125">tour</tspan>
         </text>
     </g>
 </svg>

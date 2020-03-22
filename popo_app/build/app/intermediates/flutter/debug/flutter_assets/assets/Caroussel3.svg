@@ -9,9 +9,9 @@
         <text id="04/05/2020" font-family="Roboto-Regular, Roboto" font-size="12" font-weight="normal" letter-spacing="0.5000005" fill="#FFFFFF">
             <tspan x="6" y="142">04/05/2020</tspan>
         </text>
-        <text id="Exposition-en-réalit" font-family="Roboto-Regular, Roboto" font-size="24" font-weight="normal" letter-spacing="1.000001" fill="#FFFFFF">
-            <tspan x="6" y="97">Exposition en</tspan>
-            <tspan x="6" y="125">réalité augmentée</tspan>
+        <text id="Augmented-reality-ex" font-family="Roboto-Regular, Roboto" font-size="24" font-weight="normal" letter-spacing="1.000001" fill="#FFFFFF">
+            <tspan x="6" y="97">Augmented reality</tspan>
+            <tspan x="6" y="125">exhibition</tspan>
         </text>
     </g>
 </svg>

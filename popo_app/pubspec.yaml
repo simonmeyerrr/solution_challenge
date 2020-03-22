@@ -23,6 +23,8 @@ dependencies:
   geolocator: ^5.3.0
   location: ^2.5.0
   flutter_svg: ^0.17.3+1
+  http: ^0.12.0+1
+  json_serializable: ^2.0.2
   flutter:
     sdk: flutter
 
@@ -31,6 +33,8 @@ dependencies:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
+  pedantic: ^1.4.0
+  build_runner: ^1.2.7
   flutter_test:
     sdk: flutter
 
@@ -55,6 +59,11 @@ flutter:
     - Caroussel2.svg
     - Caroussel3.svg
     - darkMap.json
+    - marker_red.png
+    - marker_yellow.png
+    - marker_blue.png
+    - marker_green.png
+    - logo_animate.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

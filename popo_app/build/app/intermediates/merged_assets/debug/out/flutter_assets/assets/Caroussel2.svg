@@ -9,8 +9,8 @@
         <text id="25/04/2020" font-family="Roboto-Regular, Roboto" font-size="12" font-weight="normal" letter-spacing="0.5000005" fill="#FFFFFF">
             <tspan x="6" y="142">25/04/2020</tspan>
         </text>
-        <text id="Exposition-à-Strasbo" font-family="Roboto-Regular, Roboto" font-size="24" font-weight="normal" letter-spacing="1.000001" fill="#FFFFFF">
-            <tspan x="6" y="97">Exposition à</tspan>
+        <text id="Exhibition-in-Strasb" font-family="Roboto-Regular, Roboto" font-size="24" font-weight="normal" letter-spacing="1.000001" fill="#FFFFFF">
+            <tspan x="6" y="97">Exhibition in</tspan>
             <tspan x="6" y="125">Strasbourg</tspan>
         </text>
     </g>

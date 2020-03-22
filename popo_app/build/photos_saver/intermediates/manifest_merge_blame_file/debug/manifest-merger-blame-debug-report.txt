@@ -1,0 +1,12 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.makarezp.photos_saver" >
+4
+5    <uses-sdk android:minSdkVersion="16" />
+5-->/Users/pauldec/.pub-cache/hosted/pub.dartlang.org/photos_saver-0.0.2/android/src/main/AndroidManifest.xml
+6
+7    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+7-->/Users/pauldec/.pub-cache/hosted/pub.dartlang.org/photos_saver-0.0.2/android/src/main/AndroidManifest.xml:3:5-80
+7-->/Users/pauldec/.pub-cache/hosted/pub.dartlang.org/photos_saver-0.0.2/android/src/main/AndroidManifest.xml:3:22-78
+8
+9</manifest>

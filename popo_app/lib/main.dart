@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -7,10 +8,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp/draw_page.dart';
 import 'package:flutterapp/side_menu.dart';
+import 'package:flutterapp/splash_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:location/location.dart';
+import 'location.dart' as locations;
 
 void main() => runApp(MyApp());
 
@@ -33,6 +36,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.blueAccent,
         cursorColor: Colors.white
       ),
+      debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     );
   }
@@ -46,6 +50,12 @@ class MyHomePage extends StatefulWidget {
 class MyAppState extends State<MyHomePage> {
 
   Completer<GoogleMapController> _mapController = Completer();
+  final Map<String, Marker> _markers = {};
+
+  BitmapDescriptor customMarkerRed;
+  BitmapDescriptor customMarkerBlue;
+  BitmapDescriptor customMarkerGreen;
+  BitmapDescriptor customMarkerYellow;
 
   static LatLng _cameraPosition;
   Color slidingPanelColor = Colors.white;
@@ -59,6 +69,26 @@ class MyAppState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(8, 8)),
+        'assets/marker_red.png')
+        .then((d) {
+      customMarkerRed = d;
+    });
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(8, 8)),
+        'assets/marker_blue.png')
+        .then((d) {
+      customMarkerBlue = d;
+    });
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(8, 8)),
+        'assets/marker_green.png')
+        .then((d) {
+      customMarkerGreen = d;
+    });
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(8, 8)),
+        'assets/marker_yellow.png')
+        .then((d) {
+      customMarkerYellow = d;
+    });
     rootBundle.loadString("assets/darkMap.json").then((string) {
       _mapStyle = string;
     });
@@ -101,7 +131,7 @@ class MyAppState extends State<MyHomePage> {
             ],
           )
         ),
-        body: _cameraPosition == null ? Container(child: Center(child:Text('loading map..', style: TextStyle(fontFamily: 'Avenir-Medium', color: Colors.grey[400]),),),) : _body()
+        body: _cameraPosition == null ? SplashScreen() : _body()
       ),
       drawer: NavDrawer(),
     );
@@ -114,19 +144,39 @@ class MyAppState extends State<MyHomePage> {
       children: <Widget>[
         GoogleMap(
           zoomGesturesEnabled: true,
+          compassEnabled: false,
+          mapToolbarEnabled: false,
           initialCameraPosition: CameraPosition(
             target: _cameraPosition,
             zoom: 18.0,
           ),
-          onMapCreated: (GoogleMapController controller) {
+          onMapCreated: (GoogleMapController controller) async {
             if (isDark) {
               mapController = controller;
               mapController.setMapStyle(_mapStyle);
             }
+            final googleOffices = await locations.getGoogleOffices();
+            setState(() {
+              _markers.clear();
+              for (final office in googleOffices.offices) {
+                final _icon = selectRandomMarker();
+                final marker = Marker(
+                  icon: _icon,
+                  markerId: MarkerId(office.name),
+                  position: LatLng(office.lat, office.lng),
+                  infoWindow: InfoWindow(
+                    title: office.name,
+                    snippet: office.address,
+                  ),
+                );
+                _markers[office.name] = marker;
+              }
+            });
             setState(() {
               _mapController.complete(controller);
             });
           },
+          markers: _markers.values.toSet(),
           myLocationEnabled: true,
           myLocationButtonEnabled: false
         ),
@@ -302,5 +352,19 @@ class MyAppState extends State<MyHomePage> {
         ),
       ],
     );
+  }
+
+  BitmapDescriptor selectRandomMarker() {
+    final _random = new Random();
+    final r = _random.nextInt(4);
+
+    if (r == 0)
+      return customMarkerRed;
+    else if (r == 1)
+      return  customMarkerGreen;
+    else if (r == 2)
+      return customMarkerBlue;
+    else
+      return customMarkerYellow;
   }
 }

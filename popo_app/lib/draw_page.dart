@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
-
 import 'package:flutterapp/painter.dart';
 import 'package:flutterapp/width_dialog.dart';
-
 import 'color_dialog.dart';
 import 'dart:ui' as ui;
 
