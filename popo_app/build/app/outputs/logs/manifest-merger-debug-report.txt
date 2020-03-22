@@ -10,6 +10,7 @@ MERGED from [:geolocator] /Users/pauldec/AndroidStudioProjects/flutter_app/build
 MERGED from [:location_permissions] /Users/pauldec/AndroidStudioProjects/flutter_app/build/location_permissions/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:google_maps_flutter] /Users/pauldec/AndroidStudioProjects/flutter_app/build/google_maps_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_plugin_android_lifecycle] /Users/pauldec/AndroidStudioProjects/flutter_app/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
+MERGED from [:path_provider] /Users/pauldec/AndroidStudioProjects/flutter_app/build/path_provider/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:google_api_availability] /Users/pauldec/AndroidStudioProjects/flutter_app/build/google_api_availability/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.gms:play-services-maps:17.0.0] /Users/pauldec/.gradle/caches/transforms-2/files-2.1/6b9b7fc1ad481537ed0a66d62976ec46/play-services-maps-17.0.0/AndroidManifest.xml:17:1-38:12
 MERGED from [com.google.android.gms:play-services-location:17.0.0] /Users/pauldec/.gradle/caches/transforms-2/files-2.1/df3d45654315cc7c4e9333a3fb7b0815/play-services-location-17.0.0/AndroidManifest.xml:2:1-9:12
@@ -142,6 +143,8 @@ MERGED from [:google_maps_flutter] /Users/pauldec/AndroidStudioProjects/flutter_
 MERGED from [:google_maps_flutter] /Users/pauldec/AndroidStudioProjects/flutter_app/build/google_maps_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:flutter_plugin_android_lifecycle] /Users/pauldec/AndroidStudioProjects/flutter_app/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:flutter_plugin_android_lifecycle] /Users/pauldec/AndroidStudioProjects/flutter_app/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:path_provider] /Users/pauldec/AndroidStudioProjects/flutter_app/build/path_provider/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:path_provider] /Users/pauldec/AndroidStudioProjects/flutter_app/build/path_provider/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:google_api_availability] /Users/pauldec/AndroidStudioProjects/flutter_app/build/google_api_availability/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:google_api_availability] /Users/pauldec/AndroidStudioProjects/flutter_app/build/google_api_availability/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-maps:17.0.0] /Users/pauldec/.gradle/caches/transforms-2/files-2.1/6b9b7fc1ad481537ed0a66d62976ec46/play-services-maps-17.0.0/AndroidManifest.xml:20:5-44
