@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:solution_challenge/services/authentication.dart';
 
 class NavDrawer extends StatelessWidget {
-  NavDrawer({this.logoutCallback});
+  NavDrawer({this.auth, this.logoutCallback});
 
+  final BaseAuth auth;
   final VoidCallback logoutCallback;
+
+
   Color headerColor = Colors.blue;
+
+  signOut() async {
+    try {
+      await this.auth.signOut();
+      logoutCallback();
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +67,7 @@ class NavDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
-            onTap: logoutCallback,
+            onTap: () => {signOut()},
           ),
         ],
       ),

@@ -13,12 +13,15 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:location/location.dart';
+import 'package:solution_challenge/services/authentication.dart';
 import 'location.dart' as locations;
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({this.logoutCallback});
+  MyHomePage({this.auth, this.logoutCallback});
 
+  final BaseAuth auth;
   final VoidCallback logoutCallback;
+
   @override
   State<MyHomePage> createState() => MyAppState();
 }
@@ -109,7 +112,7 @@ class MyAppState extends State<MyHomePage> {
         ),
         body: _cameraPosition == null ? SplashScreen() : _body()
       ),
-      drawer: NavDrawer(logoutCallback: widget.logoutCallback),
+      drawer: NavDrawer(auth: widget.auth, logoutCallback: widget.logoutCallback),
     );
   }
 
