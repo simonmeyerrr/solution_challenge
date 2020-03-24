@@ -11,12 +11,22 @@ dependencies:
     sdk: flutter
 
   cloud_firestore: ^0.13.4+1
-
+  google_maps_flutter: ^0.5.24+1
+  flutter_swiper: ^1.1.6
+  sliding_up_panel: ^1.0.0
+  geolocator: ^5.3.0
+  location: ^2.5.0
+  flutter_svg: ^0.17.3+1
+  http: ^0.12.0+1
+  json_serializable: ^2.0.2
+  path_provider: 1.6.1
   cupertino_icons: ^0.1.2
   firebase_auth: ^0.14.0+5
   firebase_database: ^3.0.7
 
 dev_dependencies:
+  pedantic: ^1.4.0
+  build_runner: ^1.2.7
   flutter_test:
     sdk: flutter
 
@@ -26,5 +36,14 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/flutter-icon.png
+    - Caroussel1.svg
+    - Caroussel2.svg
+    - Caroussel3.svg
+    - darkMap.json
+    - marker_red.png
+    - marker_yellow.png
+    - marker_blue.png
+    - marker_green.png
+    - logo_animate.gif
+    - flutter-icon.png
 

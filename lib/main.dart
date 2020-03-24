@@ -9,12 +9,24 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: 'Solution Challenge',
-        debugShowCheckedModeBanner: false,
-        theme: new ThemeData(
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+          brightness: Brightness.light,
           primarySwatch: Colors.blue,
-        ),
-        home: new RootPage(auth: new Auth()));
+          canvasColor: Colors.white,
+          accentColor: Colors.blue,
+          cursorColor: Colors.black
+      ),
+      darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.blue,
+          canvasColor: Color.fromARGB(255, 26, 34, 46),
+          accentColor: Colors.blueAccent,
+          cursorColor: Colors.white
+      ),
+      debugShowCheckedModeBanner: false,
+      home: RootPage(auth: new Auth()),
+    );
   }
 }

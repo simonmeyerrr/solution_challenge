@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:solution_challenge/pages/login_signup_page.dart';
 import 'package:solution_challenge/services/authentication.dart';
-import 'package:solution_challenge/pages/baby_votes_page.dart';
+import 'package:solution_challenge/popo/main.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -30,8 +30,7 @@ class _RootPageState extends State<RootPage> {
         if (user != null) {
           _userId = user?.uid;
         }
-        authStatus =
-        user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
+        authStatus = user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
       });
     });
   }
@@ -77,10 +76,10 @@ class _RootPageState extends State<RootPage> {
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return new BabyVotesPage(
+          return new MyHomePage(
             //userId: _userId,
             //auth: widget.auth,
-            //logoutCallback: logoutCallback,
+            logoutCallback: logoutCallback,
           );
         } else
           return buildWaitingScreen();
