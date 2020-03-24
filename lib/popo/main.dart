@@ -207,7 +207,7 @@ class MyAppState extends State<MyHomePage> {
                   materialTapTargetSize: MaterialTapTargetSize.padded,
                   child: const Icon(Icons.brush, size: 36.0),
                   onPressed: () {
-                    Navigator.push(_scaffoldKey.currentContext, MaterialPageRoute(builder: (context) => DrawPage()));
+                    Navigator.push(_scaffoldKey.currentContext, MaterialPageRoute(builder: (context) => DrawPage(auth: widget.auth)));
                   },
                 ),
               ),

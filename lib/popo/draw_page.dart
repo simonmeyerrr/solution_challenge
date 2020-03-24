@@ -1,14 +1,22 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
 import 'package:solution_challenge/popo/painter.dart';
 import 'package:solution_challenge/popo/width_dialog.dart';
+import 'package:solution_challenge/services/authentication.dart';
 import 'color_dialog.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:ui' as ui;
 
 class DrawPage extends StatefulWidget {
+  DrawPage({this.auth});
+
+  final BaseAuth auth;
+
   @override
   DrawPageState createState() => new DrawPageState();
 }
@@ -240,8 +248,22 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
     }
     ui.Image img = await boundary.toImage();
     ByteData test = await img.toByteData(format: ui.ImageByteFormat.png);
-    setState(() {
-      screenShot = test.buffer.asUint8List();
+    String uid = (await widget.auth.getCurrentUser()).uid;
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child(uid + '/' + DateTime.now().millisecondsSinceEpoch.toString() + '-' + (math.Random.secure().nextInt(10999) + 1000).toString() + '.png');
+    StorageUploadTask uploadTask = storageReference.putData(test.buffer.asUint8List());
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    String fileURL = await storageReference.getDownloadURL();
+    print(fileURL);
+    DocumentReference doc = await Firestore.instance.collection('post').add({
+      'uid': uid,
+      'img': fileURL,
+      'public': false,
+      'loc': new GeoPoint(5, 6)
     });
+    print("Doc uploaded");
+    print(doc);
   }
 }
