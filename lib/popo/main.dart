@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -134,23 +135,7 @@ class MyAppState extends State<MyHomePage> {
               mapController = controller;
               mapController.setMapStyle(_mapStyle);
             }
-            final googleOffices = await locations.getGoogleOffices();
-            setState(() {
-              _markers.clear();
-              for (final office in googleOffices.offices) {
-                final _icon = selectRandomMarker();
-                final marker = Marker(
-                  icon: _icon,
-                  markerId: MarkerId(office.name),
-                  position: LatLng(office.lat, office.lng),
-                  infoWindow: InfoWindow(
-                    title: office.name,
-                    snippet: office.address,
-                  ),
-                );
-                _markers[office.name] = marker;
-              }
-            });
+            _setAllPin();
             setState(() {
               _mapController.complete(controller);
             });
@@ -345,5 +330,28 @@ class MyAppState extends State<MyHomePage> {
       return customMarkerBlue;
     else
       return customMarkerYellow;
+  }
+
+  void _setAllPin() async {
+    QuerySnapshot querySnapshot = await Firestore.instance.collection("post").getDocuments();
+    var list = querySnapshot.documents;
+
+      setState(() {
+        _markers.clear();
+        for (var i = 0; i < list.length; i++) {
+          GeoPoint location = list.elementAt(i).data['loc'];
+          final _icon = selectRandomMarker();
+          final marker = Marker(
+            icon: _icon,
+            markerId: MarkerId(list.elementAt(i).documentID),
+            position: LatLng(location.latitude, location.longitude),
+            infoWindow: InfoWindow(
+              title: "dessin name",
+              snippet: "dessin description",
+            ),
+          );
+          _markers[list.elementAt(i).documentID] = marker;
+        }
+      });
   }
 }
