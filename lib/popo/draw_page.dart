@@ -53,6 +53,10 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
       backgroundColor: Colors.white,
       body: RepaintBoundary(
         key: previewContainer,
+        child: Container(
+          color: Colors.white,
+
+
         child: GestureDetector(
           onPanUpdate: (DragUpdateDetails details) {
             setState(() {
@@ -73,6 +77,7 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
             size: Size.infinite,
           ),
         ),
+      ),
       ),
       floatingActionButton:
         Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
