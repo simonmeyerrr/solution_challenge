@@ -15,7 +15,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:location/location.dart';
 import 'package:solution_challenge/services/authentication.dart';
-import 'location.dart' as locations;
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({this.auth, this.logoutCallback});
@@ -27,10 +26,31 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => MyAppState();
 }
 
+class PinInformation {
+  String drawPath;
+  LatLng location;
+  String locationName;
+  Color labelColor;
+  PinInformation({
+    this.drawPath,
+    this.location,
+    this.locationName,
+    this.labelColor});
+}
+
 class MyAppState extends State<MyHomePage> {
 
   Completer<GoogleMapController> _mapController = Completer();
   final Map<String, Marker> _markers = {};
+  double pinPillPosition = -100;
+  PinInformation sourcePinInfo;
+
+  PinInformation currentlySelectedPin = PinInformation(
+    drawPath: "",
+    location: LatLng(0, 0),
+    locationName: "",
+    labelColor: Colors.grey
+  );
 
   BitmapDescriptor customMarkerRed;
   BitmapDescriptor customMarkerBlue;
@@ -142,8 +162,14 @@ class MyAppState extends State<MyHomePage> {
           },
           markers: _markers.values.toSet(),
           myLocationEnabled: true,
-          myLocationButtonEnabled: false
+          myLocationButtonEnabled: false,
+          onTap: (LatLng location) {
+            setState(() {
+              pinPillPosition = -100;
+            });
+          }
         ),
+        _markerDetails(),
         Padding(
             padding: const EdgeInsets.all(16.0),
             child: Align(
@@ -152,12 +178,12 @@ class MyAppState extends State<MyHomePage> {
                 height: 60,
                 width: 60,
                 child: FloatingActionButton(
-                    heroTag: "mainBtnMenu",
-                    materialTapTargetSize: MaterialTapTargetSize.padded,
-                    child: const Icon(Icons.menu, size: 36.0),
-                    onPressed: () {
-                      _scaffoldKey.currentState.openDrawer();
-                    }
+                  heroTag: "mainBtnMenu",
+                  materialTapTargetSize: MaterialTapTargetSize.padded,
+                  child: const Icon(Icons.menu, size: 36.0),
+                  onPressed: () {
+                    _scaffoldKey.currentState.openDrawer();
+                  }
                 )
               ),
             )
@@ -235,12 +261,15 @@ class MyAppState extends State<MyHomePage> {
     } on Exception {
       currentLocation = null;
     }
+    setState(() {
+      pinPillPosition = -100;
+    });
     controller.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(
-      bearing: 0,
-      target: LatLng(currentLocation.latitude, currentLocation.longitude),
-      zoom: 18.0,
-    ),
+        bearing: 0,
+        target: LatLng(currentLocation.latitude, currentLocation.longitude),
+        zoom: 18.0,
+      ),
     ));
   }
 
@@ -258,11 +287,12 @@ class MyAppState extends State<MyHomePage> {
         },
         itemCount: 3,
         pagination: new SwiperPagination(
-            builder: new DotSwiperPaginationBuilder(
-                activeColor: Theme.of(context).accentColor,
-                color: dotColor,
-                size: 8,
-                activeSize: 10)
+          builder: new DotSwiperPaginationBuilder(
+            activeColor: Theme.of(context).accentColor,
+            color: dotColor,
+            size: 8,
+            activeSize: 10
+          )
         ),
         viewportFraction: 0.8,
         scale: 0.9,
@@ -336,22 +366,89 @@ class MyAppState extends State<MyHomePage> {
     QuerySnapshot querySnapshot = await Firestore.instance.collection("post").getDocuments();
     var list = querySnapshot.documents;
 
-      setState(() {
-        _markers.clear();
-        for (var i = 0; i < list.length; i++) {
-          GeoPoint location = list.elementAt(i).data['loc'];
-          final _icon = selectRandomMarker();
-          final marker = Marker(
-            icon: _icon,
-            markerId: MarkerId(list.elementAt(i).documentID),
-            position: LatLng(location.latitude, location.longitude),
-            infoWindow: InfoWindow(
-              title: "dessin name",
-              snippet: "dessin description",
-            ),
-          );
-          _markers[list.elementAt(i).documentID] = marker;
-        }
-      });
+    setState(() {
+      _markers.clear();
+      for (var i = 0; i < list.length; i++) {
+        GeoPoint location = list.elementAt(i).data['loc'];
+        final _icon = selectRandomMarker();
+        var newSourcePinInfo = PinInformation(
+          locationName: list.elementAt(i).data['adress'],
+          location: LatLng(location.latitude, location.longitude),
+          drawPath: list.elementAt(i).data['img'],
+          labelColor: Colors.blueAccent
+        );
+        final marker = Marker(
+          icon: _icon,
+          markerId: MarkerId(list.elementAt(i).documentID),
+          position: LatLng(location.latitude, location.longitude),
+          onTap: () {
+            setState(() {
+              currentlySelectedPin = newSourcePinInfo;
+              pinPillPosition = 100;
+            });
+          }
+        );
+        _markers[list.elementAt(i).documentID] = marker;
+      }
+    });
+  }
+
+  Widget _markerDetails() {
+    return AnimatedPositioned(
+      top: pinPillPosition, right: 0, left: 0,
+      duration: Duration(milliseconds: 200),
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          margin: EdgeInsets.all(20),
+          height: 70,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(50)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                blurRadius: 20,
+                offset: Offset.zero,
+                color: Colors.grey.withOpacity(0.5)
+              )
+            ]
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(left: 10),
+                width: 50, height: 50,
+                child: ClipOval(
+                  child:
+                  Image.network(
+                    currentlySelectedPin.drawPath,
+                    fit: BoxFit.cover
+                  )
+                )
+              ),
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(left: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        currentlySelectedPin.locationName,
+                        style: TextStyle(
+                          color: currentlySelectedPin.labelColor
+                        )
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ]
+          ),
+        ),
+      )
+    );
   }
 }

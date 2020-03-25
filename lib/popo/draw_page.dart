@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:math' as math;
 import 'package:solution_challenge/popo/painter.dart';
@@ -259,11 +259,16 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
     String fileURL = await storageReference.getDownloadURL();
     print(fileURL);
     Position position = await Geolocator().getCurrentPosition();
+    final coordinates = new Coordinates(
+        position.latitude, position.longitude);
+    var addresses = await Geocoder.local.findAddressesFromCoordinates(
+        coordinates);
     DocumentReference doc = await Firestore.instance.collection('post').add({
       'uid': uid,
       'img': fileURL,
       'public': false,
-      'loc': new GeoPoint(position.latitude, position.longitude)
+      'loc': new GeoPoint(position.latitude, position.longitude),
+      'adress': addresses.first.addressLine
     });
     print("Doc uploaded");
     print(doc);
