@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:solution_challenge/popo/draw_details.dart';
 import 'package:solution_challenge/popo/draw_page.dart';
 import 'package:solution_challenge/popo/side_menu.dart';
 import 'package:solution_challenge/popo/splash_screen.dart';
@@ -421,10 +422,17 @@ class MyAppState extends State<MyHomePage> {
                 margin: EdgeInsets.only(left: 10),
                 width: 50, height: 50,
                 child: ClipOval(
-                  child:
-                  Image.network(
-                    currentlySelectedPin.drawPath,
-                    fit: BoxFit.cover
+                  child: GestureDetector(
+                    child: Hero(
+                      tag: 'imageHero',
+                      child: Image.network(
+                          currentlySelectedPin.drawPath,
+                          fit: BoxFit.cover
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(_scaffoldKey.currentContext, MaterialPageRoute(builder: (context) => DrawDetails(imgPath: currentlySelectedPin.drawPath)));
+                    }
                   )
                 )
               ),

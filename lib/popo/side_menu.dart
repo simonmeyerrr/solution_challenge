@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:solution_challenge/services/authentication.dart';
 
-class NavDrawer extends StatelessWidget {
+class NavDrawer extends StatefulWidget {
   NavDrawer({this.auth, this.logoutCallback});
 
   final BaseAuth auth;
   final VoidCallback logoutCallback;
 
+  @override
+  _NavDrawerState createState() => _NavDrawerState();
+}
 
+class _NavDrawerState extends State<NavDrawer> {
   Color headerColor = Colors.blue;
 
   signOut() async {
     try {
-      await this.auth.signOut();
-      logoutCallback();
+      await this.widget.auth.signOut();
+      widget.logoutCallback();
     } catch (e) {
       print(e);
     }
