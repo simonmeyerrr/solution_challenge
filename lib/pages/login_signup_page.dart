@@ -15,6 +15,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   final _formKey = new GlobalKey<FormState>();
 
   String _email;
+  String _username;
   String _password;
   String _errorMessage;
 
@@ -44,16 +45,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           userId = await widget.auth.signIn(_email, _password);
           print('Signed in: $userId');
         } else {
-          userId = await widget.auth.signUp(_email, _password);
-          //widget.auth.sendEmailVerification();
-          //_showVerifyEmailSentDialog();
+          userId = await widget.auth.signUp(_email, _password, _username);
           print('Signed up user: $userId');
         }
         setState(() {
           _isLoading = false;
         });
 
-        if (userId.length > 0 && userId != null && _isLoginForm) {
+        if (userId.length > 0 && userId != null) {
           widget.loginCallback();
         }
       } catch (e) {
@@ -111,29 +110,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     );
   }
 
-//  void _showVerifyEmailSentDialog() {
-//    showDialog(
-//      context: context,
-//      builder: (BuildContext context) {
-//        // return object of type Dialog
-//        return AlertDialog(
-//          title: new Text("Verify your account"),
-//          content:
-//              new Text("Link to verify account has been sent to your email"),
-//          actions: <Widget>[
-//            new FlatButton(
-//              child: new Text("Dismiss"),
-//              onPressed: () {
-//                toggleFormMode();
-//                Navigator.of(context).pop();
-//              },
-//            ),
-//          ],
-//        );
-//      },
-//    );
-//  }
-
   Widget _showForm() {
     return new Container(
         padding: EdgeInsets.all(16.0),
@@ -141,9 +117,18 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           key: _formKey,
           child: new ListView(
             shrinkWrap: true,
-            children: <Widget>[
+            children: _isLoginForm ?
+            <Widget>[
               showLogo(),
               showEmailInput(),
+              showPasswordInput(),
+              showPrimaryButton(),
+              showSecondaryButton(),
+              showErrorMessage(),
+            ] : <Widget>[
+              showLogo(),
+              showEmailInput(),
+              showUsernameInput(),
               showPasswordInput(),
               showPrimaryButton(),
               showSecondaryButton(),
@@ -199,6 +184,25 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             )),
         validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
         onSaved: (value) => _email = value.trim(),
+      ),
+    );
+  }
+
+  Widget showUsernameInput() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      child: new TextFormField(
+        maxLines: 1,
+        keyboardType: TextInputType.text,
+        autofocus: false,
+        decoration: new InputDecoration(
+            hintText: 'Username',
+            icon: new Icon(
+              Icons.mail,
+              color: Colors.grey,
+            )),
+        validator: (value) => value.isEmpty ? 'Username can\'t be empty' : null,
+        onSaved: (value) => _username = value.trim(),
       ),
     );
   }

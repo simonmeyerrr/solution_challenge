@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geocoder/geocoder.dart';
@@ -254,10 +255,10 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
     }
     ui.Image img = await boundary.toImage();
     ByteData test = await img.toByteData(format: ui.ImageByteFormat.png);
-    String uid = (await widget.auth.getCurrentUser()).uid;
+    FirebaseUser user = await widget.auth.getCurrentUser();
     StorageReference storageReference = FirebaseStorage.instance
         .ref()
-        .child(uid + '/' + DateTime.now().millisecondsSinceEpoch.toString() + '-' + (math.Random.secure().nextInt(10999) + 1000).toString() + '.png');
+        .child(user.uid + '/' + DateTime.now().millisecondsSinceEpoch.toString() + '-' + (math.Random.secure().nextInt(10999) + 1000).toString() + '.png');
     StorageUploadTask uploadTask = storageReference.putData(test.buffer.asUint8List());
     await uploadTask.onComplete;
     print('File Uploaded');
@@ -269,13 +270,13 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
     var addresses = await Geocoder.local.findAddressesFromCoordinates(
         coordinates);
     DocumentReference doc = await Firestore.instance.collection('post').add({
-      'uid': uid,
+      'uid': user.uid,
+      'username':  user.displayName,
       'img': fileURL,
       'public': false,
       'loc': new GeoPoint(position.latitude, position.longitude),
       'adress': addresses.first.addressLine
     });
     print("Doc uploaded");
-    print(doc);
   }
 }
