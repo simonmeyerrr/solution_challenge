@@ -2,6 +2,8 @@
 
 Flutter application for Google Solution Challenge.
 
+![Logo](logo_animate.gif)
+
 ## Getting Started
 
 To make this project work with Firebase, you should :
