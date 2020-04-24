@@ -27,6 +27,7 @@ dependencies:
   firebase_storage: ^3.0.3
   arcore_flutter_plugin: ^0.0.5+1
   network_image_to_byte: ^0.0.1
+  flutter_launcher_icons: ^0.7.4
 
 dependency_overrides:
   firebase_core: 0.4.4
@@ -37,6 +38,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  image_path: "assets/logo1.png"
+  android: true
+  ios: true
 
 flutter:
 
@@ -59,4 +64,5 @@ flutter:
     - art4.jpg
     - art5.jpg
     - art6.jpeg
+    - logo1.png
 
