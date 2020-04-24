@@ -45,7 +45,19 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
   }
 
   @override
+  void setState(fn) {
+    if(mounted){
+      super.setState(fn);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    Timer.periodic(Duration(seconds: 1), (time) {
+      setState(() {
+        points = new List.from(points);
+      });
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text("Drawing"),
@@ -56,7 +68,6 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
         key: previewContainer,
         child: Container(
           color: Colors.white,
-
 
         child: GestureDetector(
           onPanUpdate: (DragUpdateDetails details) {
@@ -95,7 +106,7 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
               child: FloatingActionButton(
                 heroTag: "btnDrawSave",
                 mini: true,
-                child: Icon(Icons.save),
+                child: Icon(Icons.cloud_upload),
                 onPressed: takeScreenShot
               ),
             ),
@@ -114,14 +125,19 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
                 mini: true,
                 child: Icon(Icons.undo),
                 onPressed: () {
-                  for (var i = 0; i < 20; i++) {
-                    if (points.isNotEmpty) {
-                      points.removeLast();
+                  setState(() {
+                    for (var i = 0; i < 20; i++) {
+                      if (points.isNotEmpty) {
+                        points.removeLast();
+                      }
                     }
-                  }
-                  for (Painter painter in painters) {
-                    painter.points.clear();
-                  }
+                    if (points.isNotEmpty) {
+                      points.add(null);
+                    }
+                    for (Painter painter in painters) {
+                      painter.points.clear();
+                    }
+                  });
                 },
               ),
             ),
@@ -140,10 +156,12 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
                 mini: true,
                 child: Icon(Icons.clear),
                 onPressed: () {
-                  points.clear();
-                  for (Painter painter in painters) {
-                    painter.points.clear();
-                  }
+                  setState(() {
+                    points.clear();
+                    for (Painter painter in painters) {
+                      painter.points.clear();
+                    }
+                  });
                 },
               ),
             ),
@@ -278,5 +296,29 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
       'adress': addresses.first.addressLine
     });
     print("Doc uploaded");
+    _showDialog();
+  }
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Good Job"),
+          content: new Text("Your art has been upload !"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

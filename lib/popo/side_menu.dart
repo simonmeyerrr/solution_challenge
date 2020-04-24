@@ -13,6 +13,7 @@ class NavDrawer extends StatefulWidget {
 
 class _NavDrawerState extends State<NavDrawer> {
   Color headerColor = Colors.blue;
+  String _userName = "";
 
   signOut() async {
     try {
@@ -23,6 +24,16 @@ class _NavDrawerState extends State<NavDrawer> {
     }
   }
 
+  getUserName() async {
+    widget.auth.getCurrentUser().then((user) {
+      setState(() {
+        if (user != null) {
+          _userName = user?.displayName;
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     //Handle dark mode
@@ -30,6 +41,7 @@ class _NavDrawerState extends State<NavDrawer> {
     if (isDark) {
       headerColor = Colors.blueAccent;
     }
+    getUserName();
 
     return Drawer(
       child: ListView(
@@ -37,7 +49,7 @@ class _NavDrawerState extends State<NavDrawer> {
         children: <Widget>[
           DrawerHeader(
             child: Text(
-              'Side menu',
+              'Google City Art',
               style: TextStyle(color: Colors.white, fontSize: 25),
             ),
             decoration: BoxDecoration(
@@ -49,24 +61,9 @@ class _NavDrawerState extends State<NavDrawer> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.input),
-            title: Text('Welcome'),
+            leading: Icon(Icons.account_box),
+            title: Text("Welcome " + _userName),
             onTap: () => {},
-          ),
-          ListTile(
-            leading: Icon(Icons.verified_user),
-            title: Text('Profile'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.border_color),
-            title: Text('Feedback'),
-            onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),

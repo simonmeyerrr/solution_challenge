@@ -47,16 +47,18 @@ class MyAppState extends State<MyHomePage> {
   PinInformation sourcePinInfo;
 
   PinInformation currentlySelectedPin = PinInformation(
-    drawPath: "",
-    location: LatLng(0, 0),
-    locationName: "",
-    labelColor: Colors.grey
+      drawPath: "",
+      location: LatLng(0, 0),
+      locationName: "",
+      labelColor: Colors.grey
   );
 
   BitmapDescriptor customMarkerRed;
   BitmapDescriptor customMarkerBlue;
   BitmapDescriptor customMarkerGreen;
   BitmapDescriptor customMarkerYellow;
+
+  List<String> allImg = ["assets/art1.jpg", "assets/art2.jpeg", "assets/art3.jpg", "assets/art4.jpg", "assets/art5.jpg", "assets/art6.jpeg"];
 
   static LatLng _cameraPosition;
   Color slidingPanelColor = Colors.white;
@@ -108,31 +110,31 @@ class MyAppState extends State<MyHomePage> {
     return Scaffold(
       key: _scaffoldKey,
       body: SlidingUpPanel(
-        controller: _pc,
-        minHeight: 0,
-        maxHeight: 700,
-        color: slidingPanelColor,
-        backdropEnabled: true,
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-        panel: Container (
-          margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-          child: Column(
-            children: <Widget>[
-              _carousel(),
-              Divider(
-                color: Theme.of(context).cursorColor,
-                height: 50,
-                indent: 20,
-                endIndent: 20,
-              ),
-              Container(
-                height: 360,
-                child: _scrollView()
+          controller: _pc,
+          minHeight: 0,
+          maxHeight: 700,
+          color: slidingPanelColor,
+          backdropEnabled: true,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          panel: Container (
+              margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+              child: Column(
+                children: <Widget>[
+                  _carousel(),
+                  Divider(
+                    color: Theme.of(context).cursorColor,
+                    height: 50,
+                    indent: 20,
+                    endIndent: 20,
+                  ),
+                  Container(
+                      height: 360,
+                      child: _scrollView()
+                  )
+                ],
               )
-            ],
-          )
-        ),
-        body: _cameraPosition == null ? SplashScreen() : _body()
+          ),
+          body: _cameraPosition == null ? SplashScreen() : _body()
       ),
       drawer: NavDrawer(auth: widget.auth, logoutCallback: widget.logoutCallback),
     );
@@ -144,31 +146,31 @@ class MyAppState extends State<MyHomePage> {
     return Stack(
       children: <Widget>[
         GoogleMap(
-          zoomGesturesEnabled: true,
-          compassEnabled: false,
-          mapToolbarEnabled: false,
-          initialCameraPosition: CameraPosition(
-            target: _cameraPosition,
-            zoom: 18.0,
-          ),
-          onMapCreated: (GoogleMapController controller) async {
-            if (isDark) {
-              mapController = controller;
-              mapController.setMapStyle(_mapStyle);
+            zoomGesturesEnabled: true,
+            compassEnabled: false,
+            mapToolbarEnabled: false,
+            initialCameraPosition: CameraPosition(
+              target: _cameraPosition,
+              zoom: 18.0,
+            ),
+            onMapCreated: (GoogleMapController controller) async {
+              if (isDark) {
+                mapController = controller;
+                mapController.setMapStyle(_mapStyle);
+              }
+              _setAllPin();
+              setState(() {
+                _mapController.complete(controller);
+              });
+            },
+            markers: _markers.values.toSet(),
+            myLocationEnabled: true,
+            myLocationButtonEnabled: false,
+            onTap: (LatLng location) {
+              setState(() {
+                pinPillPosition = -100;
+              });
             }
-            _setAllPin();
-            setState(() {
-              _mapController.complete(controller);
-            });
-          },
-          markers: _markers.values.toSet(),
-          myLocationEnabled: true,
-          myLocationButtonEnabled: false,
-          onTap: (LatLng location) {
-            setState(() {
-              pinPillPosition = -100;
-            });
-          }
         ),
         _markerDetails(),
         Padding(
@@ -176,16 +178,16 @@ class MyAppState extends State<MyHomePage> {
             child: Align(
               alignment: Alignment.bottomLeft,
               child: Container(
-                height: 60,
-                width: 60,
-                child: FloatingActionButton(
-                  heroTag: "mainBtnMenu",
-                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                  child: const Icon(Icons.menu, size: 36.0),
-                  onPressed: () {
-                    _scaffoldKey.currentState.openDrawer();
-                  }
-                )
+                  height: 60,
+                  width: 60,
+                  child: FloatingActionButton(
+                      heroTag: "mainBtnMenu",
+                      materialTapTargetSize: MaterialTapTargetSize.padded,
+                      child: const Icon(Icons.menu, size: 36.0),
+                      onPressed: () {
+                        _scaffoldKey.currentState.openDrawer();
+                      }
+                  )
               ),
             )
         ),
@@ -194,16 +196,16 @@ class MyAppState extends State<MyHomePage> {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: 60,
-                width: 60,
-                child: FloatingActionButton(
-                  heroTag: "mainBtnEvents",
-                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                  child: const Icon(Icons.account_balance, size: 36.0),
-                  onPressed: () {
-                    _pc.open();
-                  },
-                )
+                  height: 60,
+                  width: 60,
+                  child: FloatingActionButton(
+                    heroTag: "mainBtnEvents",
+                    materialTapTargetSize: MaterialTapTargetSize.padded,
+                    child: const Icon(Icons.account_balance, size: 36.0),
+                    onPressed: () {
+                      _pc.open();
+                    },
+                  )
               ),
             )
         ),
@@ -230,15 +232,15 @@ class MyAppState extends State<MyHomePage> {
             child: Align(
               alignment: Alignment.bottomRight,
               child: Container(
-                height: 40,
-                width: 40,
-                child: FloatingActionButton(
-                  heroTag: "mainBtnGeoloc",
-                  backgroundColor: Theme.of(context).accentColor.withOpacity(0.8),
-                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                  child: const Icon(Icons.my_location, size: 20.0),
-                  onPressed: _getLocationAndMove
-                )
+                  height: 40,
+                  width: 40,
+                  child: FloatingActionButton(
+                      heroTag: "mainBtnGeoloc",
+                      backgroundColor: Theme.of(context).accentColor.withOpacity(0.8),
+                      materialTapTargetSize: MaterialTapTargetSize.padded,
+                      child: const Icon(Icons.my_location, size: 20.0),
+                      onPressed: _getLocationAndMove
+                  )
               ),
             )
         ),
@@ -276,29 +278,67 @@ class MyAppState extends State<MyHomePage> {
 
   Widget _carousel() {
     return Container(
-      height: 260,
-      child: Swiper(
-        //Picture H 150 | W 250
-        itemHeight: 150,
-        itemBuilder: (BuildContext context, int index){
-          var newI = index + 1;
-          return SvgPicture.asset(
+        height: 260,
+        child: Swiper(
+          //Picture H 150 | W 250
+          itemHeight: 150,
+          itemBuilder: (BuildContext context, int index){
+            var newI = index + 1;
+            return SvgPicture.asset(
               "assets/Caroussel$newI.svg",
-          );
-        },
-        itemCount: 3,
-        pagination: new SwiperPagination(
-          builder: new DotSwiperPaginationBuilder(
-            activeColor: Theme.of(context).accentColor,
-            color: dotColor,
-            size: 8,
-            activeSize: 10
-          )
-        ),
-        viewportFraction: 0.8,
-        scale: 0.9,
-      )
+            );
+          },
+          itemCount: 3,
+          pagination: new SwiperPagination(
+              builder: new DotSwiperPaginationBuilder(
+                  activeColor: Theme.of(context).accentColor,
+                  color: dotColor,
+                  size: 8,
+                  activeSize: 10
+              )
+          ),
+          viewportFraction: 0.8,
+          scale: 0.9,
+        )
     );
+  }
+
+  List<IconData> icons = [];
+
+  List<Widget> getAllImg() {
+    List<Widget> list = new List<Widget>();
+
+    list.clear();
+    for(var i = 0; i < allImg.length; i++) {
+      icons.add(Icons.favorite_border);
+      list.add(Container(
+          child: Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              ColorFiltered(
+                  child: Image.asset(allImg[i], fit: BoxFit.cover),
+                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.dstATop)
+              ),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(120.0, 120.0, 10.0, 10.0),
+                  child: FloatingActionButton(
+                      heroTag: "likeButton$i",
+                      materialTapTargetSize: MaterialTapTargetSize.padded,
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                      child: new Icon(icons[i], size: 36.0, color: Colors.pink),
+                      onPressed: () {
+                        setState(() {
+                          icons[i] = icons[i] == Icons.favorite_border ? Icons.favorite : Icons.favorite_border;
+                        });
+                      }
+                  )
+              ),
+            ],
+          )
+      ));
+    }
+    return list;
   }
 
   Widget _scrollView() {
@@ -308,41 +348,10 @@ class MyAppState extends State<MyHomePage> {
         SliverPadding(
           padding: const EdgeInsets.all(20),
           sliver: SliverGrid.count(
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            crossAxisCount: 2,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: const Text('He\'d have you all unravel at the'),
-                color: Colors.blue[100],
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: const Text('Heed not the rabble'),
-                color: Colors.blue[200],
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: const Text('Sound of screams but the'),
-                color: Colors.blue[300],
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: const Text('Who scream'),
-                color: Colors.blue[400],
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: const Text('Revolution is coming...'),
-                color: Colors.blue[500],
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: const Text('Revolution, they...'),
-                color: Colors.blue[600],
-              ),
-            ],
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              crossAxisCount: 2,
+              children: getAllImg()
           ),
         ),
       ],
@@ -373,21 +382,21 @@ class MyAppState extends State<MyHomePage> {
         GeoPoint location = list.elementAt(i).data['loc'];
         final _icon = selectRandomMarker();
         var newSourcePinInfo = PinInformation(
-          locationName: list.elementAt(i).data['adress'],
-          location: LatLng(location.latitude, location.longitude),
-          drawPath: list.elementAt(i).data['img'],
-          labelColor: Colors.blueAccent
+            locationName: list.elementAt(i).data['adress'],
+            location: LatLng(location.latitude, location.longitude),
+            drawPath: list.elementAt(i).data['img'],
+            labelColor: Colors.blueAccent
         );
         final marker = Marker(
-          icon: _icon,
-          markerId: MarkerId(list.elementAt(i).documentID),
-          position: LatLng(location.latitude, location.longitude),
-          onTap: () {
-            setState(() {
-              currentlySelectedPin = newSourcePinInfo;
-              pinPillPosition = 100;
-            });
-          }
+            icon: _icon,
+            markerId: MarkerId(list.elementAt(i).documentID),
+            position: LatLng(location.latitude, location.longitude),
+            onTap: () {
+              setState(() {
+                currentlySelectedPin = newSourcePinInfo;
+                pinPillPosition = 100;
+              });
+            }
         );
         _markers[list.elementAt(i).documentID] = marker;
       }
@@ -396,67 +405,67 @@ class MyAppState extends State<MyHomePage> {
 
   Widget _markerDetails() {
     return AnimatedPositioned(
-      top: pinPillPosition, right: 0, left: 0,
-      duration: Duration(milliseconds: 200),
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          margin: EdgeInsets.all(20),
-          height: 70,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(50)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                blurRadius: 20,
-                offset: Offset.zero,
-                color: Colors.grey.withOpacity(0.5)
-              )
-            ]
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(left: 10),
-                width: 50, height: 50,
-                child: ClipOval(
-                  child: GestureDetector(
-                    child: Hero(
-                      tag: 'imageHero',
-                      child: Image.network(
-                          currentlySelectedPin.drawPath,
-                          fit: BoxFit.cover
+        top: pinPillPosition, right: 0, left: 0,
+        duration: Duration(milliseconds: 200),
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            margin: EdgeInsets.all(20),
+            height: 70,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      blurRadius: 20,
+                      offset: Offset.zero,
+                      color: Colors.grey.withOpacity(0.5)
+                  )
+                ]
+            ),
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                      margin: EdgeInsets.only(left: 10),
+                      width: 50, height: 50,
+                      child: ClipOval(
+                          child: GestureDetector(
+                              child: Hero(
+                                tag: 'imageHero',
+                                child: Image.network(
+                                    currentlySelectedPin.drawPath,
+                                    fit: BoxFit.cover
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.push(_scaffoldKey.currentContext, MaterialPageRoute(builder: (context) => DrawDetails(imgPath: currentlySelectedPin.drawPath)));
+                              }
+                          )
+                      )
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                              currentlySelectedPin.locationName,
+                              style: TextStyle(
+                                  color: currentlySelectedPin.labelColor
+                              )
+                          )
+                        ],
                       ),
                     ),
-                    onTap: () {
-                      Navigator.push(_scaffoldKey.currentContext, MaterialPageRoute(builder: (context) => DrawDetails(imgPath: currentlySelectedPin.drawPath)));
-                    }
-                  )
-                )
-              ),
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.only(left: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        currentlySelectedPin.locationName,
-                        style: TextStyle(
-                          color: currentlySelectedPin.labelColor
-                        )
-                      )
-                    ],
                   ),
-                ),
-              ),
-            ]
+                ]
+            ),
           ),
-        ),
-      )
+        )
     );
   }
 }
