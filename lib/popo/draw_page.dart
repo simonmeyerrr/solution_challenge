@@ -93,7 +93,6 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
       ),
       floatingActionButton:
         Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-          _buildChild(),
           Container(
             height: 70.0,
             width: 56.0,
@@ -255,13 +254,6 @@ class DrawPageState extends State<DrawPage> with TickerProviderStateMixin {
         ]
       ),
     );
-  }
-
-  Widget _buildChild() {
-    if (screenShot != null) {
-      return new Image.memory(screenShot, height: 300, width: 150);
-    }
-    return new Text("null");
   }
 
   takeScreenShot() async{
