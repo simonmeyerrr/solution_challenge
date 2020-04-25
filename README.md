@@ -8,6 +8,10 @@ Flutter application for Google Solution Challenge.
 
 #### https://bit.ly/CityArtDSC
 
+## Presentation Video of the application
+
+[![GoogleCityArtYoutube](http://img.youtube.com/vi/OPx5TJ5_PtE/0.jpg)](http://www.youtube.com/watch?v=OPx5TJ5_PtE)
+
 ## Presentation Document of the application
 
 
